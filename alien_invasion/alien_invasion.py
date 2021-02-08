@@ -18,16 +18,22 @@ class AlienInvasion:
 
     def run_game(self):
         while True:
-            # get() returns all last events
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-            # fill screen with specify color
-            self.screen.fill(self.settings.bg_color)
-            # overlay sheep image to main surface
-            self.ship.blitme()
-            # draw updated screen
-            pygame.display.flip()
+            self._check_events()
+            self._update_screen()
+
+    def _check_events(self):
+        # get() returns all last events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+    def _update_screen(self):
+        # fill screen with specify color
+        self.screen.fill(self.settings.bg_color)
+        # overlay sheep image to main surface
+        self.ship.blitme()
+        # draw updated screen
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
