@@ -12,3 +12,8 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (255, 0, 0)
         self.bullets_allowed = 3
+        # aliens
+        self.alien_speed = 1.0
+        self.fleet_drop_speed = 10
+        # 1 for right direction, -1 for left direction. We can simply use multiplying to change 'x' coordinate with +/-
+        self.fleet_direction = 1
