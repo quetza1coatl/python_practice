@@ -7,6 +7,7 @@ from alien import Alien
 from time import sleep
 from game_stats import GameStats
 from button import Button
+from game_complexity import GameComplexity
 
 
 class AlienInvasion:
@@ -27,7 +28,9 @@ class AlienInvasion:
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
-        self.buttons = [Button(self, "Easy", 0), Button(self, "Normal", 1), Button(self, "Hard", 2)]
+        self.buttons = [Button(self, GameComplexity.easy),
+                        Button(self, GameComplexity.normal),
+                        Button(self, GameComplexity.hard)]
         pygame.display.set_caption("Alien Invasion")
 
     def run_game(self):
@@ -66,7 +69,7 @@ class AlienInvasion:
 
     def _check_keydown_events(self, event):
         if event.key == pygame.K_s and not self.stats.game_active:
-            self._start_game(1)
+            self._start_game(GameComplexity.normal.value)
         elif event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:

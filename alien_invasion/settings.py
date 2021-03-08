@@ -1,3 +1,6 @@
+from game_complexity import GameComplexity
+
+
 class Settings:
     def __init__(self):
         # general
@@ -13,22 +16,24 @@ class Settings:
         # aliens
         self.fleet_drop_speed = 10
         # button complexity - vertical_shift_factor map. Keys: 0 - for easy, 2 for hard
-        self.button_vertical_shift_factor_map = {0: -1, 1: 0, 2: 1}
+        self.button_vertical_shift_factor_map = {GameComplexity.easy.complexity_factor: -1,
+                                                 GameComplexity.normal.complexity_factor: 0,
+                                                 GameComplexity.hard.complexity_factor: 1}
         # How quickly the game speeds up
         self.speedup_scale = 1.1
 
-        self.initialize_dynamic_settings(1)
+        self.initialize_dynamic_settings(GameComplexity.normal.complexity_factor)
 
     def initialize_dynamic_settings(self, game_complexity):
         """Initialize settings that change throughout the game."""
         # easy
-        if game_complexity == 0:
+        if game_complexity == GameComplexity.easy.complexity_factor:
             self.bullets_allowed = 5
             self.ship_speed = 2
             self.bullet_speed = 4.0
             self.alien_speed = 0.5
         # hard
-        elif game_complexity == 2:
+        elif game_complexity == GameComplexity.hard.complexity_factor:
             self.bullets_allowed = 3
             self.ship_speed = 1.2
             self.bullet_speed = 3.0
