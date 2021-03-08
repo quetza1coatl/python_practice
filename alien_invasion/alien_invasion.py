@@ -27,7 +27,7 @@ class AlienInvasion:
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
-        self.play_button = Button(self, "Play")
+        self.buttons = [Button(self, "Easy", 0), Button(self, "Normal", 1), Button(self, "Hard", 2)]
         pygame.display.set_caption("Alien Invasion")
 
     def run_game(self):
@@ -55,13 +55,18 @@ class AlienInvasion:
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks Play."""
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        button_clicked = False
+        game_complexity = None
+        for button in self.buttons:
+            if button.rect.collidepoint(mouse_pos):
+                button_clicked = True
+                game_complexity = button.complexity_factor
         if button_clicked and not self.stats.game_active:
-            self._start_game()
+            self._start_game(game_complexity)
 
     def _check_keydown_events(self, event):
         if event.key == pygame.K_s and not self.stats.game_active:
-            self._start_game()
+            self._start_game(1)
         elif event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
@@ -77,10 +82,10 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
-    def _start_game(self):
+    def _start_game(self, game_complexity):
         # Reset the game statistics.
         self.stats.reset_stats()
-        self.settings.initialize_dynamic_settings()
+        self.settings.initialize_dynamic_settings(game_complexity)
         self.stats.game_active = True
 
         # Get rid of any remaining aliens and bullets.
@@ -103,7 +108,8 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
         if not self.stats.game_active:
-            self.play_button.draw_button()
+            for button in self.buttons:
+                button.draw_button()
         # draw updated screen
         pygame.display.flip()
 

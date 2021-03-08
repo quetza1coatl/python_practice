@@ -10,20 +10,35 @@ class Settings:
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (255, 0, 0)
-        self.bullets_allowed = 3
         # aliens
         self.fleet_drop_speed = 10
-
+        # button complexity - vertical_shift_factor map. Keys: 0 - for easy, 2 for hard
+        self.button_vertical_shift_factor_map = {0: -1, 1: 0, 2: 1}
         # How quickly the game speeds up
         self.speedup_scale = 1.1
 
-        self.initialize_dynamic_settings()
+        self.initialize_dynamic_settings(1)
 
-    def initialize_dynamic_settings(self):
+    def initialize_dynamic_settings(self, game_complexity):
         """Initialize settings that change throughout the game."""
-        self.ship_speed = 1.5
-        self.bullet_speed = 3.0
-        self.alien_speed = 1.0
+        # easy
+        if game_complexity == 0:
+            self.bullets_allowed = 5
+            self.ship_speed = 2
+            self.bullet_speed = 4.0
+            self.alien_speed = 0.5
+        # hard
+        elif game_complexity == 2:
+            self.bullets_allowed = 3
+            self.ship_speed = 1.2
+            self.bullet_speed = 3.0
+            self.alien_speed = 1.3
+        # normal for other
+        else:
+            self.bullets_allowed = 4
+            self.ship_speed = 1.6
+            self.bullet_speed = 3.0
+            self.alien_speed = 1.0
 
         # fleet_direction of 1 represents right; -1 represents left.
         self.fleet_direction = 1
