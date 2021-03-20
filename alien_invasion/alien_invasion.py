@@ -8,6 +8,7 @@ from time import sleep
 from game_stats import GameStats
 from button import Button
 from game_complexity import GameComplexity
+from scoreboard import Scoreboard
 
 
 class AlienInvasion:
@@ -24,6 +25,7 @@ class AlienInvasion:
         self.settings.screen_height = self.screen.get_rect().height
 
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
@@ -90,6 +92,7 @@ class AlienInvasion:
         self.stats.reset_stats()
         self.settings.initialize_dynamic_settings(game_complexity)
         self.stats.game_active = True
+        self.sb.prep_score()
 
         # Get rid of any remaining aliens and bullets.
         self.aliens.empty()
@@ -110,6 +113,7 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        self.sb.show_score()
         if not self.stats.game_active:
             for button in self.buttons:
                 button.draw_button()
@@ -205,6 +209,10 @@ class AlienInvasion:
         # check collisions. Returns map with collided objects.
         # True, True - means delete collided objects from both sprite groups
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+            self.sb.prep_score()
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
