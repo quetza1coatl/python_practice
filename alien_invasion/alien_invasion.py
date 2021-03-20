@@ -93,6 +93,7 @@ class AlienInvasion:
         self.settings.initialize_dynamic_settings(game_complexity)
         self.stats.game_active = True
         self.sb.prep_score()
+        self.sb.prep_level()
 
         # Get rid of any remaining aliens and bullets.
         self.aliens.empty()
@@ -218,6 +219,8 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            self.stats.level += 1
+            self.sb.prep_level()
 
 
 if __name__ == '__main__':
